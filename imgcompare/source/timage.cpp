@@ -1,37 +1,43 @@
 #include "timage.h"
-#include <iostream> 
-#include <string>
 
-TImage::TImage(void)
+/*
+**	public:
+*/
+
+TImage::TImage(const char* file)
+	: max(Color(0, 0, 0)), wth(0), hgh(0)
 {
-	w = 0;
-	h = 0;
-	image = NULL;
+	if (file != nullptr)
+		load(file);
 }
 
+TImage::~TImage() {}
 
-TImage::~TImage(void)
-{
-
+int TImage::getWth() const {
+	return wth;
 }
 
-void TImage::setpoint(int px, int py, int color)
-{
-	image[(py-1)*w+px-1] = color;
+int TImage::getHgh() const {
+	return hgh;
 }
 
-int TImage::getpoint(int px, int py)
-{
-	if(px<1) px=1;
-	if(py<1) py=1;
-	if(px>w) px=w;
-	if(py>h) py=h;
-	return image[(py-1)*w+px-1];
+// cl: 'r', 'g', 'b'
+int TImage::getMax(const char cl) const {
+	if (cl == 'r')
+		return max.redQuantum();
+	else if (cl == 'g')
+		return max.greenQuantum();
+	else if (cl == 'b')
+		return max.blueQuantum();
+	
+	return 0;
 }
 
-void TImage::load(char* file)
-{
+Image& TImage::getImg() {
+	return img;
+}
 
+<<<<<<< HEAD
 	FILE *fp;
 	fp = fopen(file,"r");
 
@@ -70,40 +76,42 @@ void TImage::save(char* file)
 		perror ("Error opening file");
 		exit(0);
 	}
-
-	fprintf(fp, "P2\n%d %d\n%d\n", w, h, max);
-	for(int i=0;i<h;i++)
-	{
-		for(int j=0;j<w;j++)
-		{
-			fprintf(fp,"%d",image[w*i+j]);
-			if(j!=(w-1))fprintf(fp," ");
-		}
-		if(i!=(h-1)) fprintf(fp,"\n");
-	}
-	fclose(fp);
+=======
+void TImage::setImg(const Image& image) {
+	img = image;
+	getProps();	// wth, hgh, max
 }
 
-void TImage::copy(TImage *p)
-{
-	if(image!=NULL) free(image);
-	w = p->w;
-	h = p->h;
-	image = (int*)malloc(sizeof(int)*(w*h));
-	for(int i=0;i<w*h;i++)
-		image[i] = p->image[i];
-	max = p->max;
+void TImage::load(const char* file) {
+	img.read(file);
+	getProps(); // wth, hgh, max
+}
+>>>>>>> 20a5bc7ca560f549505c5f1fe921a30757e43f94
+
+void TImage::save(const char* file) {
+	img.write(file);
 }
 
-bool operator==(const TImage& left, const TImage& right) {
-	if(left.w!=right.w || left.h!=right.h) 
-		return 0;
-	else
-		for(int i=0;i<left.w*left.h;i++)
-			if(left.image[i]!=right.image[i]) return 0;
-	return 1;
+void TImage::copy(TImage& image) {
+	img = image.img;	// automatic dealloc
+	wth = image.wth;
+	hgh = image.hgh;
+	max = image.max;
 }
 
+TImage& TImage::operator=(TImage& image) {
+	copy(image);
+	return *this;
+}
+
+bool operator==(TImage& left, TImage& right) {
+	// comparing only imgs, because other props equal to img attributes
+	if (left.img.compare(right.img))
+		return true;
+	
+	return false;
+}
+/*
 void TImage::filterSobel()
 {
 	int z[3][3];
@@ -146,19 +154,26 @@ void TImage::filterSobel()
 		for(int x=1;x<=w;x++)
 			image[(y-1)*w+x-1] = buf[(y-1)*w+x-1];
 }
+*/
 
-TImage& TImage::operator=(TImage& i)
-{
-	copy(&i);
-	return *this;
-}
+/*
+** protected:
+*/
 
-int TImage::getw()
-{
-	return w;
-}
+void TImage::getProps() {
+	wth = img.size().width();
+	hgh = img.size().height();
 
-int TImage::geth()
-{
-	return h;
+	// finding max values of red, green, blue
+	for (int i = 0; i < hgh; i++)
+		for (int j = 0; j < wth; j++) {
+			if (max.redQuantum() < img.pixelColor(j, i).redQuantum())
+				max.redQuantum(img.pixelColor(j, i).redQuantum());
+
+			if (max.greenQuantum() < img.pixelColor(j, i).greenQuantum())
+				max.greenQuantum(img.pixelColor(j, i).greenQuantum());
+
+			if (max.blueQuantum() < img.pixelColor(j, i).blueQuantum())
+				max.blueQuantum(img.pixelColor(j, i).blueQuantum());
+		}
 }
