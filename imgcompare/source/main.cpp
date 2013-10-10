@@ -6,8 +6,8 @@
 
 int main(int argc, char** argv){
 
-// 	CHistogramm hist;
-//	CHistogramm hist2;
+ 	CHistogramm hist;
+	CHistogramm hist2;
 
 	TImage img, img2;
 
@@ -18,14 +18,14 @@ int main(int argc, char** argv){
 	}
 
 	img.load(argv[1]);
-
+	img2.load(argv[2]);
 	printf("The image is loaded\n");
-	img.save(argv[2]);
-	//hist.calculate(&img);
-	//hist2.calculate(&img2);
+	//img.save(argv[2]);
+	hist.calculate(&img);
+	hist2.calculate(&img2);
 	
-	//printf("histogramms 1 and 2 are equale? %s \n", (hist==hist2)?"true":"false");
-	//printf("histogramms 1 and 1 are equale? %s \n", (hist==hist2)?"true":"false");
+	printf("histogramms 1 and 2 are equale? %s \n", (hist==hist2)?"true":"false");
+	printf("histogramms 1 and 1 are equale? %s \n", (hist==hist)?"true":"false");
 
 	return 0;
 }
