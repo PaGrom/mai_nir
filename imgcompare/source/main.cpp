@@ -8,20 +8,19 @@ int main(int argc, char** argv){
 
 // 	CHistogramm hist;
 //	CHistogramm hist2;
-	printf("%d\n", __LINE__);
-	
+
 	TImage img, img2;
 
-        if(argc<3)
-        {
-           printf("imgrecog src.pgm dst.pgm");
-        }
-        printf("%d\n", __LINE__);
+	if(argc<3)
+	{
+		printf("%s src.pgm dst.pgm\n", argv[0]);
+		exit(1);
+	}
+
 	img.load(argv[1]);
-	printf("%d\n", __LINE__);
-        printf("The image is loaded\n");
+
+	printf("The image is loaded\n");
 	img.save(argv[2]);
-	printf("%d\n", __LINE__);
 	//hist.calculate(&img);
 	//hist2.calculate(&img2);
 	

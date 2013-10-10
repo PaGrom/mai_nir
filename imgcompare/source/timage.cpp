@@ -33,15 +33,18 @@ void TImage::load(char* file)
 {
 
 	FILE *fp;
-	printf("%d\n", __LINE__);
 	fp = fopen(file,"r");
-	printf("%d\n", __LINE__);
+
+	if (fp == NULL) {
+		perror ("Error opening file");
+		exit(0);
+	}
+
 	char* c = (char*) malloc(100* sizeof(char));
-	printf("%d\n", __LINE__);
+
 	fgets(c,sizeof(c),fp);
-	printf("%d\n", __LINE__);
 	fgets(c,sizeof(c),fp);
-	printf("%d\n", __LINE__);
+
 	if(c[0]!='#')
 		sscanf(c,"%d%d",&w,&h);
 	else
@@ -49,12 +52,12 @@ void TImage::load(char* file)
 	fscanf(fp, "%d", &max);
 	image = (int*)malloc(sizeof(int)*(w*h));
 	printf("%d\n", __LINE__);
-        printf("image w=%d image h=%d \n",w,h);
+		printf("image w=%d image h=%d \n",w,h);
 	int i = 0;
 	while(fscanf(fp, "%d", &image[i]) != EOF) {
-           printf("read %d line %d\n",image[i],i);
-           i++;
-        }
+		printf("read %d line %d\n",image[i],i);
+		i++;
+	}
 	
 	fclose(fp);
 }
@@ -63,6 +66,10 @@ void TImage::save(char* file)
 {
 	FILE *fp;
 	fp = fopen(file,"w");
+	if (fp == NULL) {
+		perror ("Error opening file");
+		exit(0);
+	}
 
 	fprintf(fp, "P2\n%d %d\n%d\n", w, h, max);
 	for(int i=0;i<h;i++)
