@@ -1,7 +1,7 @@
 #include "CHistogramm.h"
 #include <iostream>
 
-#define B 1
+#define B 0.1
 
 /**
  * Constructor
@@ -43,18 +43,27 @@ bool operator==(const CHistogramm& left, const CHistogramm& right)
 {
   int* hist1 = left.hist;
   int* hist2 = right.hist;
+  long double sum1=0,sum2=0;
   bool result=0;
-  int  res=0;
+  double  res=0;
 
   if (left.length != right.length)
     return result;
 
+  for(int i=0; i<right.length; ++i){
+	  sum1+=*(hist1+i);
+	  sum2+=*(hist2+i);
+  }
+
+
   for (int i=0; i<left.length; ++i)
   {
-    result = result || !(*(hist1+i) == *(hist2+i));
+    //result = result || !(*(hist1+i) == *(hist2+i));
 
-    //res = (abs((*(hist1+i))-(*(hist2+i)));
-    //result = result || !<B);
+    double x=(*(hist1+i))/sum1;
+    double y=(*(hist2+i))/sum2;
+    res += (abs(x-y));
+    result = result || !res<B;
   }
   return !result;
 }
