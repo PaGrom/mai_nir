@@ -25,7 +25,7 @@ APPNAME = imgcompare
 all:$(APPNAME)
 
 $(APPNAME): $(patsubst %.cpp,%.o,$(SRC_CPP)) $(patsubst %.c,%.o,$(SRC_C))
-	$(CXX) $(addprefix $(OBJ_DIR)/,$(notdir $^)) -lrt -lpthread -o $(OBJ_DIR)/$@
+	$(CXX) $(addprefix $(OBJ_DIR)/,$(notdir $^)) -o $(OBJ_DIR)/$@
 
 %.o: %.cpp
 	$(CXX) $(CFLAGS) -c $< -o $(OBJ_DIR)/$@
