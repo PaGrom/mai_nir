@@ -2,6 +2,8 @@
 
 class CHistogramm{
 protected:
+  const int brght;
+
   int length;
   int* hist;
 

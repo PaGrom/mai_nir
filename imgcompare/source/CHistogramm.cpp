@@ -7,9 +7,10 @@
  * Constructor
  */
 CHistogramm::CHistogramm(void)
+  : brght((int) MaxRGB)
 {
-	length = 3*256;
-	hist= new int[3*256];
+	length = 3 * (brght + 1);
+	hist= new int[length];
 	for(int i=0; i< length; ++i) {
 		printf("\n");
 		hist[i]=0;
@@ -22,11 +23,19 @@ CHistogramm::CHistogramm(void)
  */
 void CHistogramm::calculate(TImage *im)
 {
-	for(int i = 0; i < im->getWth(); ++i) {
+	Image img = im->getImg();
+
+  for(int i = 0; i < im->getWth(); ++i) {
 		for(int j = 0; j < im->getHgh(); ++j) {
-			hist[im->getpoint(i, j) & 255]++;
+      hist[(int) img.pixelColor(i, j).redQuantum()]++;
+      hist[(brght+1) + (int)img.pixelColor(i, j).greenQuantum()]++;
+			hist[2 * (brght+1) + (int)img.pixelColor(i, j).blueQuantum()]++;
+
+      /*
+      hist[im->getpoint(i, j) & 255]++;
 			hist[256 + ((im->getpoint(i, j) >> 8) & 255)]++;
 			hist[2 * 256 + ((im->getpoint(i, j) >> 16) & 255)]++;
+      */
 		}
 	}
 	for(int i=0; i< length/3; ++i)
