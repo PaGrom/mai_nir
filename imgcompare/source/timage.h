@@ -8,7 +8,7 @@
 using std::ifstream;
 using std::ios_base;
 
-#include <ImageMagick-6/Magick++.h>
+#include <Magick++.h>
 using Magick::Image;
 using Magick::Color;
 using Magick::Geometry;
@@ -24,7 +24,7 @@ protected:
 	void getProps();	// wth, hgh, max
 
 public:
-	TImage(const char* file = nullptr);	// loading in constr if path specified
+	TImage(const char* file = NULL);	// loading in constr if path specified
 	~TImage();
 	
 	int getWth() const;

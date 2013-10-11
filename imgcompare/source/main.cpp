@@ -22,6 +22,7 @@ int main(int argc, char** argv){
 	printf("The image is loaded\n");
 	//img.save(argv[2]);
 	hist.calculate(&img);
+	printf("\n");
 	hist2.calculate(&img2);
 	
 	printf("histogramms 1 and 2 are equale? %s \n", (hist==hist2)?"true":"false");

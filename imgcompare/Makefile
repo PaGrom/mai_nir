@@ -10,7 +10,7 @@ vpath % $(OBJ_DIR)
 
 LIB_INC = -I../LIB/tinyxml
 CFLAGS = -Wall $(LIB_INC) -DPOSIX_PORTING -DUSE_TEST_FILE
-
+MAGICK=`Magick++-config --cppflags --cxxflags --ldflags --libs`
 #TARGET = -DMOXA_UC74XX
 
 ifndef $(TARGET)
@@ -28,10 +28,10 @@ $(APPNAME): $(patsubst %.cpp,%.o,$(SRC_CPP)) $(patsubst %.c,%.o,$(SRC_C))
 	$(CXX) $(addprefix $(OBJ_DIR)/,$(notdir $^)) -o $(OBJ_DIR)/$@
 
 %.o: %.cpp
-	$(CXX) $(CFLAGS) -c $< -o $(OBJ_DIR)/$@
+	$(CXX) $(CFLAGS) $(MAGICK) -c $< -o $(OBJ_DIR)/$@
 
 %.o: %.c
-	gcc $(CFLAGS) -c $< -o $(OBJ_DIR)/$@
+	gcc $(CFLAGS) $(MAGICK) -c $< -o $(OBJ_DIR)/$@
 
 cleanobj:
 	-rm $(OBJ_DIR)/*.o
