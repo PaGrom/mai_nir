@@ -37,46 +37,6 @@ Image& TImage::getImg() {
 	return img;
 }
 
-<<<<<<< HEAD
-	FILE *fp;
-	fp = fopen(file,"r");
-
-	if (fp == NULL) {
-		perror ("Error opening file");
-		exit(0);
-	}
-
-	char* c = (char*) malloc(100* sizeof(char));
-
-	fgets(c,sizeof(c),fp);
-	fgets(c,sizeof(c),fp);
-
-	if(c[0]!='#')
-		sscanf(c,"%d%d",&w,&h);
-	else
-		fscanf(fp, "%d%d", &w, &h);
-	fscanf(fp, "%d", &max);
-	image = (int*)malloc(sizeof(int)*(w*h));
-	printf("%d\n", __LINE__);
-		printf("image w=%d image h=%d \n",w,h);
-	int i = 0;
-	while(fscanf(fp, "%d", &image[i]) != EOF) {
-		printf("read %d line %d\n",image[i],i);
-		i++;
-	}
-	
-	fclose(fp);
-}
-
-void TImage::save(char* file)
-{
-	FILE *fp;
-	fp = fopen(file,"w");
-	if (fp == NULL) {
-		perror ("Error opening file");
-		exit(0);
-	}
-=======
 void TImage::setImg(const Image& image) {
 	img = image;
 	getProps();	// wth, hgh, max
@@ -86,7 +46,6 @@ void TImage::load(const char* file) {
 	img.read(file);
 	getProps(); // wth, hgh, max
 }
->>>>>>> 20a5bc7ca560f549505c5f1fe921a30757e43f94
 
 void TImage::save(const char* file) {
 	img.write(file);
